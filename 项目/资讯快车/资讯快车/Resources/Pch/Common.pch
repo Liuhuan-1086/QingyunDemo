@@ -1,0 +1,28 @@
+//
+//  Common.pch
+//  资讯快车
+//
+//  Created by qingyun on 16/8/6.
+//  Copyright © 2016年 qingyun. All rights reserved.
+//
+
+#ifndef Common_pch
+#define Common_pch
+
+#import "UIView+Frame.h"
+
+//http://c.m.163.com/news/a/BU4RCC4M00031H2L.html?spss=newsapp&spsw=1
+//http://ent.163.com/photoview/00AJ0003/606983.html
+//http://c.m.163.com/nc/article/list/T1467284926140/0-20.html 头条
+//http://c.m.163.com/nc/article/list/T1348649079062/0-20.html 体育
+//http://c.m.163.com/nc/article/list/T1348648517839/0-20.html 娱乐
+//http://c.m.163.com/nc/article/list/T1348648756099/0-20.html 财经
+
+#define screen_width  [[UIScreen mainScreen] bounds].size.width
+#define screen_height [[UIScreen mainScreen] bounds].size.height
+
+#define random_color  [UIColor colorWithRed:arc4random_uniform(256) green:arc4random_uniform(256) blue:arc4random_uniform(256) alpha:arc4random_uniform(2)];
+
+#define  BaseUrl @"http://c.m.163.com/nc/article/list"
+
+#endif /* Common_pch */

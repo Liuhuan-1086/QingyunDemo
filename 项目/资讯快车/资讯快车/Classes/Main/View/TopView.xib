@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TopView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OtB-Yh-kgE">
+                    <rect key="frame" x="14" y="28" width="25" height="25"/>
+                    <state key="normal" image="btn_icon_navi_back_25x25_"/>
+                    <connections>
+                        <action selector="clickBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="05l-Z2-dWB"/>
+                    </connections>
+                </button>
+                <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="咨讯详情" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vPT-Yx-Uwe">
+                    <rect key="frame" x="148" y="29" width="80" height="24"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="OtB-Yh-kgE" firstAttribute="centerY" secondItem="vPT-Yx-Uwe" secondAttribute="centerY" id="IWj-fs-GOt"/>
+                <constraint firstItem="OtB-Yh-kgE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="14" id="RZX-ds-pGe"/>
+                <constraint firstAttribute="bottom" secondItem="vPT-Yx-Uwe" secondAttribute="bottom" constant="11" id="lsR-wC-yGb"/>
+                <constraint firstItem="vPT-Yx-Uwe" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="zZL-qR-5Rg"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="190.5" y="244"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="btn_icon_navi_back_25x25_" width="25" height="25"/>
+    </resources>
+</document>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
+                        <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="start.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="HfY-2c-ihq">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="HfY-2c-ihq" secondAttribute="trailing" id="0CD-vQ-zHj"/>
+                            <constraint firstAttribute="trailing" secondItem="HfY-2c-ihq" secondAttribute="trailing" id="5E8-N5-lFx"/>
+                            <constraint firstItem="HfY-2c-ihq" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="8qZ-wL-rVj"/>
+                            <constraint firstItem="HfY-2c-ihq" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="topMargin" id="CR4-jC-XXx"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="HfY-2c-ihq" secondAttribute="bottom" id="Iy6-Pa-tiX"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="HfY-2c-ihq" secondAttribute="bottom" id="LsY-Je-v5l"/>
+                            <constraint firstItem="HfY-2c-ihq" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="PD8-Qg-UZq"/>
+                            <constraint firstItem="HfY-2c-ihq" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" id="blx-m1-yPg"/>
+                            <constraint firstItem="HfY-2c-ihq" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="wkI-9H-fpl"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="172" y="81"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="start.jpg" width="500" height="757"/>
+    </resources>
+</document>
