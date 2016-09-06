@@ -37,7 +37,6 @@
     //保存用异步模式
     [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (succeeded) {
-            NSLog(@"注册成功");
             NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
             [def setValue:user.username forKey:@"username"];
             [def synchronize];
