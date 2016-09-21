@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactCell" rowHeight="66" id="KGk-i7-Jjw" customClass="ContactCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <frame key="frameInset" width="320" height="59"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="picture9" translatesAutoresizingMaskIntoConstraints="NO" id="KDy-mP-QUE">
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="KDy-mP-QUE" secondAttribute="height" multiplier="1:1" id="Zor-Mk-2Jy"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ykq-X7-A5k">
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="KDy-mP-QUE" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="9dU-N9-Ze7"/>
+                    <constraint firstItem="Ykq-X7-A5k" firstAttribute="leading" secondItem="KDy-mP-QUE" secondAttribute="trailing" constant="10" id="VYF-sB-BgN"/>
+                    <constraint firstItem="KDy-mP-QUE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="uTh-e7-ady"/>
+                    <constraint firstAttribute="bottom" secondItem="KDy-mP-QUE" secondAttribute="bottom" constant="10" id="uzp-qj-gHv"/>
+                    <constraint firstItem="Ykq-X7-A5k" firstAttribute="centerY" secondItem="KDy-mP-QUE" secondAttribute="centerY" id="z4O-oP-NPv"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="imgView" destination="KDy-mP-QUE" id="ffL-hO-ovJ"/>
+                <outlet property="lbName" destination="Ykq-X7-A5k" id="59a-Sk-4kO"/>
+            </connections>
+            <point key="canvasLocation" x="-113" y="173"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="picture9" width="1136" height="757"/>
+    </resources>
+</document>
