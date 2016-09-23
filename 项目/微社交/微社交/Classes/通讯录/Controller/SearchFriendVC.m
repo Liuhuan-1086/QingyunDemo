@@ -76,15 +76,18 @@
             }
             [self.mArrData removeAllObjects];
             for (AVObject *object in objects) {
-                NSString *username = object[@"username"];
-                NSRange range = [username rangeOfString:strData];
-                NSMutableAttributedString *mAttriString = [[NSMutableAttributedString alloc] initWithString:username];
-                [mAttriString setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:25]} range:NSMakeRange(0, username.length)];
-                [mAttriString setAttributes:@{NSForegroundColorAttributeName:[UIColor cyanColor],NSFontAttributeName:[UIFont systemFontOfSize:25]} range:range];
-                NSDictionary *dictData = @{@"imageData":object[@"imageData"],@"ausername":mAttriString};
-               ContactModel *model = [ContactModel modelWithDictionary:dictData];
-                [weakSelf.mArrData addObject:model];
-                [weakSelf.tableView reloadData];
+                if (![object[@"objectId"] isEqualToString:
+                      [[AVUser currentUser] objectForKey:@"objectId"]]) {
+                    NSString *username = object[@"username"];
+                    NSRange range = [username rangeOfString:strData];
+                    NSMutableAttributedString *mAttriString = [[NSMutableAttributedString alloc] initWithString:username];
+                    [mAttriString setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:25]} range:NSMakeRange(0, username.length)];
+                    [mAttriString setAttributes:@{NSForegroundColorAttributeName:[UIColor cyanColor],NSFontAttributeName:[UIFont systemFontOfSize:25]} range:range];
+                    NSDictionary *dictData = @{@"imageData":object[@"imageData"],@"ausername":mAttriString};
+                    ContactModel *model = [ContactModel modelWithDictionary:dictData];
+                    [weakSelf.mArrData addObject:model];
+                    [weakSelf.tableView reloadData];
+                }
             }
         }
     }];
@@ -156,7 +159,6 @@
 }
 
 - (void)dealloc {
-    [SVProgressHUD dismiss];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

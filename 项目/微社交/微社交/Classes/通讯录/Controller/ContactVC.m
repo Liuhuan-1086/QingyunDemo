@@ -9,21 +9,25 @@
 #import "ContactVC.h"
 #import "ContactCell.h"
 #import "ContactModel.h"
+#import "FindFriendVC.h"
 #import <Masonry/Masonry.h>
+#import <AVOSCloud/AVOSCloud.h>
 #import <HTChineseHandle/pinyin.h>
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @interface ContactVC ()<UITableViewDataSource, UITableViewDelegate>
 
+@property (nonatomic, assign) BOOL isFalse;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) NSMutableArray *mArrFriends;
 @property (nonatomic, strong) NSMutableArray *mArrModels;
 @property (nonatomic, copy) NSArray *arrImages;
 @property (nonatomic, copy) NSArray *arrkeys;
 @property (nonatomic, copy) NSArray *arrAlertItem;
-@property (nonatomic, copy) NSDictionary *dictFriends;
+@property (nonatomic, copy) NSDictionary *dictModels;
 @property (nonatomic, weak) UILabel *alertLabel;
 @property (nonatomic, weak) UIView *alertView;
 @property (nonatomic, strong) UIButton *button;
+@property (nonatomic, weak) UILabel *label;
 
 @end
 
@@ -42,36 +46,73 @@
     [super viewWillDisappear:animated];
     self.alertView.alpha = 0;
     self.button.selected = NO;
+    [SVProgressHUD dismiss];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    //加载等待
+    [SVProgressHUD showWithStatus:@"加载中..."];
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeNone];
+    self.hidesBottomBarWhenPushed = NO;
+    [self.mArrModels removeAllObjects];
+    __weak typeof(self) weakSelf = self;
+    AVQuery *query = [AVQuery queryWithClassName:@"Friends"];
+    [query whereKey:@"ownId" equalTo:[[AVUser currentUser] objectForKey:@"objectId"]];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (error) {
+            [SVProgressHUD dismiss];
+            [self alertController:nil Error:error];
+        } else {
+            [SVProgressHUD dismiss];
+            if (objects.count != 0) {
+                NSLog(@"%ld",objects.count);
+                for (NSUInteger index = 0; index < objects.count; index++) {
+                    NSArray *arrFriendIds = objects[index][@"friendId"];
+                    for (NSString *friendId in arrFriendIds) {
+                        NSLog(@"%ld",arrFriendIds.count);
+                        AVQuery *query = [AVQuery queryWithClassName:@"_User"];
+                        [query whereKey:@"objectId" equalTo:friendId];
+                        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+                            if (error) {
+                                NSLog(@"===============error");
+                                [self alertController:@"加载失败..." Error:nil];
+                            } else {
+                                NSDictionary *dict = @{@"username":objects[0][@"username"],@"imageData":objects[0][@"imageData"]};
+                                ContactModel *model = [ContactModel modelWithDictionary:dict];
+                                [weakSelf.mArrModels addObject:model];
+                                [weakSelf exchangeFromMutableArray:weakSelf.mArrModels];
+                                [weakSelf.tableView reloadData];
+                                weakSelf.label.text =[NSString stringWithFormat:@"%ld位联系人",weakSelf.mArrModels.count];
+                            }
+                        }];
+                    }
+                }
+            }
+        }
+    }];
 }
 
 - (void)initData {
     self.title = @"联系人";
-    self.arrAlertItem = @[@"添加好友", @"附近的人", @"创建群聊", @"扫一扫"];
-    self.arrImages = @[@"add_friend_icon_addgroup_36x36_",@"add_friend_icon_addgroup_36x36_",@"add_friend_icon_addgroup_36x36_",@"add_friend_icon_addgroup_36x36_"];
-    self.mArrFriends = [NSMutableArray array];
+    self.arrAlertItem = @[@"添加好友", @"附近的人", @"扫一扫"];
+    self.arrImages = @[@"Address_Icon_21x21_",
+                       @"ff_IconLocationService_25x25_",
+                       @"ff_IconQRCode_25x25_",];
     self.mArrModels = [NSMutableArray array];
-    [self.mArrFriends addObjectsFromArray:@[@"张三",@"李四",@"王五",@"赵六",@"小明",@"小红",@"小刘",@"张三",@"李四",@"王五",@"赵六",@"小明",@"小红",@"小刘",@"张三",@"李四",@"王五",@"赵六",@"小明",@"小红",@"小刘"]];
-    [self exchangeFromArray:self.mArrFriends];
-    UIStoryboard *story = [UIStoryboard storyboardWithName:@"Contact" bundle:nil];
-    UIViewController *vcAddFriend = [story instantiateViewControllerWithIdentifier:@"AddFriendVC"];
-    __weak typeof(self) weakSelf = self;
-    void(^blockAddFriend)(NSDictionary *dict) = ^(NSDictionary *dict){
-        ContactModel *model = [ContactModel modelWithDictionary:dict];
-        [weakSelf.mArrModels addObject:model];
-        
-    };
-    [vcAddFriend setValue:blockAddFriend forKey:@"blockAddFriend"];
 }
 
 - (void)settingTableView {
     [self addFooterView];
     self.tableView.bounces = NO;
-    self.tableView.rowHeight = 60;
+    self.tableView.rowHeight = 70;
     self.tableView.sectionFooterHeight = 0;
     self.tableView.sectionHeaderHeight = 25;
     self.tableView.sectionIndexColor = [UIColor orangeColor];
     self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
     [self.tableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
+    [self.tableView addGestureRecognizer:tap];
 }
 
 - (void)addFooterView {
@@ -79,15 +120,14 @@
     UILabel *label = [[UILabel alloc] init];
     [footer addSubview:label];
     label.frame = CGRectMake(0, 0, self.view.bounds.size.width, 20);
-    label.text = [NSString stringWithFormat:@"%ld位联系人", self.mArrFriends.count];
+    label.text = [NSString stringWithFormat:@"%ld位联系人", self.mArrModels.count];
     label.textAlignment = NSTextAlignmentCenter;
     label.textColor = [UIColor colorWithRed:0.7 green:0.7 blue:0.7 alpha:1];
+    self.label = label;
     self.tableView.tableFooterView = footer;
-    
 }
 
 - (void)addRightItem {
-    
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(0, 0, 26, 26);
     [button setImage:[UIImage imageNamed:@"barbuttonicon_more"] forState:UIControlStateNormal];
@@ -103,7 +143,7 @@
     [self.view addSubview:alertView];
     [alertView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(150);
-        make.height.mas_equalTo(200);
+        make.height.mas_equalTo(150);
         make.top.mas_equalTo(0);
         make.trailing.mas_equalTo(-30);
     }];
@@ -117,7 +157,7 @@
         [button setImage:[UIImage imageNamed:self.arrImages[index]] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1] forState:UIControlStateHighlighted];
-        if (index == 3) {
+        if (index == 2) {
             [button setImageEdgeInsets:UIEdgeInsetsMake(0, -40, 0, 0)];
             [button setTitleEdgeInsets:UIEdgeInsetsMake(0, -20, 0, 0)];
         }else {
@@ -142,13 +182,16 @@
         }
             break;
         case 1:
-            
+        {
+            UIViewController *vcSousuo = [self.storyboard instantiateViewControllerWithIdentifier:@"FindFriendVC"];
+            [self.navigationController pushViewController:vcSousuo animated:YES];
+        }
             break;
         case 2:
-            
-            break;
-        case 3:
-            
+        {
+            UIViewController *vcCode = [self.storyboard instantiateViewControllerWithIdentifier:@"QRCodeVC"];
+            [self.navigationController pushViewController:vcCode animated:YES];
+        }
             break;
         default:
             break;
@@ -181,10 +224,10 @@
     alertLabel.alpha = 0;
 }
 
-- (void)exchangeFromArray:(NSArray *)array
+- (void)exchangeFromMutableArray:(NSMutableArray *)mArray
 {
-    self.dictFriends = [self.mArrFriends sortedArrayUsingFirstLetter];
-    self.arrkeys = [[self.dictFriends allKeys] sortedArrayUsingSelector:@selector(compare:)];
+    self.dictModels = [mArray sortedArrayUsingFirstLetterByKeypath:@"strUserName"];
+    self.arrkeys = [[self.dictModels allKeys] sortedArrayUsingSelector:@selector(compare:)];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -192,13 +235,14 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.dictFriends[self.arrkeys[section]] count];
+    return [self.dictModels[self.arrkeys[section]] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ContactCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ContactCell" forIndexPath:indexPath];
     [cell setSeparatorInset:UIEdgeInsetsMake(0, 0, 0, 18)];
-    [cell setValue:self.dictFriends[self.arrkeys[indexPath.section]][indexPath.row] forKeyPath:@"lbName.text"];
+    cell.model = self.dictModels[self.arrkeys[indexPath.section]][indexPath.row];
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     return cell;
 }
 
@@ -243,6 +287,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
+    __weak typeof(self) weakSelf = self;
+    [UIView animateWithDuration:0.25 animations:^{
+        weakSelf.alertView.alpha = 0;
+    }];
+    self.button.selected = NO;
     [self showLetter:title];
     return [self.arrkeys indexOfObject:title];
 }
@@ -263,6 +312,13 @@
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [UIView animateWithDuration:0.25 animations:^{
+        self.alertView.alpha = 0;
+    }];
+    self.button.selected = NO;
+}
+
+- (void)tapAction:(UITapGestureRecognizer *)tap {
     [UIView animateWithDuration:0.25 animations:^{
         self.alertView.alpha = 0;
     }];

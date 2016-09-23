@@ -38,11 +38,11 @@
 - (void)loginSuccess:(AVUser *)user {
     //头像
     if (![user objectForKey:@"imageData"]) {
-        [user setObject:UIImagePNGRepresentation([UIImage imageNamed:@"header_image"]) forKey:@"imageData"];
+        [user setObject:UIImagePNGRepresentation([UIImage imageNamed:@"header_image.png"]) forKey:@"imageData"];
         [user saveInBackground];
     }
     if ([user objectForKey:@"email"]) {
-        [user setObject:UIImagePNGRepresentation([UIImage imageNamed:@"bg_picture"]) forKey:@"emailData"];
+        [user setObject:UIImagePNGRepresentation([UIImage imageNamed:@"bg_picture.png"]) forKey:@"emailData"];
         [user saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
                 NSLog(@"==================succeed");

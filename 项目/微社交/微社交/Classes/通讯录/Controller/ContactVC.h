@@ -10,4 +10,6 @@
 
 @interface ContactVC : BaseVC
 
+@property (nonatomic, copy) NSDictionary *dictData;
+
 @end
